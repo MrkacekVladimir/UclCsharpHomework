@@ -9,6 +9,7 @@ namespace HomeWorkOne.Core.Entities.Definitions
         string Name { get; set; }
         string Code { get; set; }
         string Description { get; set; }
+        int Capacity { get; set; }
         bool AllowsVideoConference { get; set; }
     }
 }

@@ -3,80 +3,102 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HomeWorkOne.WPF"
+        xmlns:local="clr-namespace:HomeWorkOne.Core.ViewModels;assembly=HomeWorkOne.Core"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="520" Width="800">
+        Title="MainWindow" Height="623" Width="800">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Grid.Row="0">
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem x:Name="MenuItemExportBtn" Header="Export" Click="MenuItemExportBtn_Click"/>
+                <MenuItem x:Name="MenuItemImportBtn" Header="Import" Click="MenuItemImportBtn_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="9*" />
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Label Content="Meeting Centers" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
-                <DataGrid x:Name="MeetingCentersDataGrid" Margin="15,34,0,5"  SelectionChanged="MeetingCentersDataGrid_SelectionChanged" SelectionMode="Single" IsReadOnly="True" HorizontalAlignment="Stretch"/>
-            </Grid>
-            <Grid Grid.Row="1">
-                <Button x:Name="MeetingCentersAddBtn" Content="New" Margin="20,0,0,0" VerticalAlignment="Center" Click="MeetingCentersAddBtn_Click" HorizontalAlignment="Left" Width="28"/>
-                <Button x:Name="MeetingCentersEditBtn" Content="Edit" Margin="53,0,0,0" VerticalAlignment="Center" Click="MeetingCentersEditBtn_Click" HorizontalAlignment="Left" Width="24"/>
-                <Button x:Name="MeetingCentersDeleteBtn" Content="Delete" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="38" Click="MeetingCentersDeleteBtn_Click"/>
-            </Grid>
-        </Grid>
-        <Grid Grid.Column="0" Grid.Row="1">
-            <GroupBox Header="Meeting Center Details" HorizontalAlignment="Stretch">
-                <Grid>
-                    <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-                    <TextBox x:Name="MeetingCenterNameInput" Height="24" Margin="10,36,16,0" VerticalAlignment="Top" />
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
 
-                    <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-                    <TextBox x:Name="MeetingCenterCodeInput" Height="24" Margin="10,88,16,0" VerticalAlignment="Top" />
-                    <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
-                    <TextBox x:Name="MeetingCenterDescriptionInput" Height="24" Margin="10,142,16,0" VerticalAlignment="Top" />
+                <Grid Grid.Row="0">
+                    <Label Content="Meeting Centers" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
+                    <DataGrid x:Name="MeetingCentersDataGrid" Margin="15,34,0,5"  SelectionChanged="MeetingCentersDataGrid_SelectionChanged" SelectionMode="Single" IsReadOnly="True" HorizontalAlignment="Stretch"/>
                 </Grid>
-            </GroupBox>
-        </Grid>
-
-        <Grid Grid.Column="2" Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="9*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
-                <Label Content="Meeting Rooms" Margin="0,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="94"/>
-                <DataGrid x:Name="MeetingRoomsDataGrid" Margin="0,34,15,5" SelectionChanged="MeetingRoomsDataGrid_SelectionChanged" SelectionMode="Single" IsReadOnly="True" HorizontalAlignment="Stretch"/>
-            </Grid>
-            <Grid Grid.Row="1">
-                <Button x:Name="MeetingRoomsAddBtn" Content="New"  Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="28" Click="MeetingRoomsAddBtn_Click"/>
-                <Button x:Name="MeetingRoomsEditBtn" Content="Edit"  Margin="43,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="24" Click="MeetingRoomsEditBtn_Click"/>
-                <Button x:Name="MeetingRoomsDeleteBtn" Content="Delete" Margin="0,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="38" Click="MeetingRoomsDeleteBtn_Click"/>
-            </Grid>
-        </Grid>
-        <Grid Grid.Column="2" Grid.Row="1">
-            <GroupBox Header="Meeting Room Details" HorizontalAlignment="Stretch" >
-                <Grid>
-                    <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-                    <TextBox x:Name="MeetingRoomNameInput" Margin="10,36,16,0" Height="24" VerticalAlignment="Top" />
-
-                    <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-                    <TextBox x:Name="MeetingRoomCodeInput" Margin="10,88,16,0" Height="24" VerticalAlignment="Top" />
-                    <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
-                    <TextBox x:Name="MeetingRoomDescriptionInput" Margin="10,142,16,0" Height="24" VerticalAlignment="Top" />
-
-                    <CheckBox x:Name="MeetingRoomAllowsVideoInput" Content="Allows Video Conference" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top"/>
+                <Grid Grid.Row="1">
+                    <Button x:Name="MeetingCentersAddBtn" Content="New" Margin="20,0,0,0" VerticalAlignment="Center" Click="MeetingCentersAddBtn_Click" HorizontalAlignment="Left" Width="28"/>
+                    <Button x:Name="MeetingCentersEditBtn" Content="Edit" Margin="53,0,0,0" VerticalAlignment="Center" Click="MeetingCentersEditBtn_Click" HorizontalAlignment="Left" Width="24"/>
+                    <Button x:Name="MeetingCentersDeleteBtn" Content="Delete" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="38" Click="MeetingCentersDeleteBtn_Click"/>
                 </Grid>
-            </GroupBox>
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="1">
+                <GroupBox Header="Meeting Center Details" HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <TextBox x:Name="MeetingCenterNameInput" Text="{Binding SelectedMeetingCenter.Name}" Height="24" Margin="10,36,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+
+                        <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
+                        <TextBox x:Name="MeetingCenterCodeInput" Text="{Binding SelectedMeetingCenter.Code}" Height="24" Margin="10,88,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+
+                        <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
+                        <TextBox x:Name="MeetingCenterDescriptionInput" Text="{Binding SelectedMeetingCenter.Description}" Height="24" Margin="10,142,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                    </Grid>
+                </GroupBox>
+            </Grid>
+
+            <Grid Grid.Column="2" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Label Content="Meeting Rooms" Margin="0,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="94"/>
+                    <DataGrid x:Name="MeetingRoomsDataGrid" Margin="0,34,15,5" SelectionChanged="MeetingRoomsDataGrid_SelectionChanged" SelectionMode="Single" IsReadOnly="True" HorizontalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Button x:Name="MeetingRoomsAddBtn" Content="New"  Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="28" Click="MeetingRoomsAddBtn_Click"/>
+                    <Button x:Name="MeetingRoomsEditBtn" Content="Edit"  Margin="43,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="24" Click="MeetingRoomsEditBtn_Click"/>
+                    <Button x:Name="MeetingRoomsDeleteBtn" Content="Delete" Margin="0,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="38" Click="MeetingRoomsDeleteBtn_Click"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="1">
+                <GroupBox Header="Meeting Room Details" HorizontalAlignment="Stretch" >
+                    <Grid>
+                        <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <TextBox x:Name="MeetingRoomNameInput" Text="{Binding SelectedMeetingRoom.Name}" Margin="10,36,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+
+                        <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
+                        <TextBox x:Name="MeetingRoomCodeInput" Text="{Binding SelectedMeetingRoom.Code}" Margin="10,88,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+
+                        <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
+                        <TextBox x:Name="MeetingRoomDescriptionInput" Text="{Binding SelectedMeetingRoom.Description}" Margin="10,142,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+
+                        <CheckBox x:Name="MeetingRoomAllowsVideoInput" Content="Allows Video Conference" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" IsChecked="{Binding SelectedMeetingRoom.AllowsVideoConference}" IsEnabled="False"/>
+                        <Label Content="Capacity" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,171,0,0"/>
+                        <TextBox x:Name="MeetingRoomCapacityInput" Text="{Binding SelectedMeetingRoom.Capacity}" Margin="10,197,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

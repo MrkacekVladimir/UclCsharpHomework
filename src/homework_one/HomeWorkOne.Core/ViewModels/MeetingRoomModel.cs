@@ -50,6 +50,17 @@ namespace HomeWorkOne.Core.ViewModels
             }
         }
 
+        private int _capacity;
+        public int Capacity
+        {
+            get { return _capacity; }
+            set
+            {
+                _capacity = value;
+                OnPropertyChanged( nameof( Description ) );
+            }
+        }
+
         private bool _allowsVideoConference;
         public bool AllowsVideoConference
         {

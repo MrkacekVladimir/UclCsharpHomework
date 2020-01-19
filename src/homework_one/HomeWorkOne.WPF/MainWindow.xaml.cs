@@ -1,13 +1,8 @@
-﻿using HomeWorkOne.Core.Entities;
-using HomeWorkOne.Core.Entities.Common;
-using HomeWorkOne.Core.Entities.Definitions;
+﻿using HomeWorkOne.Core.Entities.Definitions;
 using HomeWorkOne.Core.Entities.Extensions;
 using HomeWorkOne.Core.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using HomeWorkOne.WPF.Windows;
+using Microsoft.Win32;
 using System.Windows;
 
 namespace HomeWorkOne.WPF
@@ -17,15 +12,14 @@ namespace HomeWorkOne.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel = new MainWindowViewModel( );
 
         public MainWindow( )
         {
             InitializeComponent( );
 
-            _viewModel = new MainWindowViewModel( );
-
-            MeetingCentersDataGrid.ItemsSource = _viewModel.MeetingCenters;            
+            DataContext = _viewModel;
+            MeetingCentersDataGrid.ItemsSource = _viewModel.MeetingCenters;
         }
 
         #region Meeting Centers
@@ -34,40 +28,51 @@ namespace HomeWorkOne.WPF
         {
             if ( e.AddedItems.Count > 0 )
             {
-                 if(e.AddedItems[ 0 ] is MeetingCenterModel meetingCenter )
+                if ( e.AddedItems[ 0 ] is MeetingCenterModel meetingCenter )
                 {
-                    _viewModel.SelectedMeetingCentre = meetingCenter;
-                    MeetingRoomsDataGrid.ItemsSource = _viewModel.GetMeetingRooms(meetingCenter);
-                }                
+                    _viewModel.SelectedMeetingCenter = meetingCenter;
+                    MeetingRoomsDataGrid.ItemsSource = _viewModel.GetMeetingRooms( meetingCenter );
+                }
             }
         }
 
         private void MeetingCentersAddBtn_Click( object sender, RoutedEventArgs e )
         {
-            var values = GetValuesForMeetingCenter( );
+            ManageMeetingCenterWindow window = new ManageMeetingCenterWindow( );
+            window.ShowDialog( );
 
-            _viewModel.MeetingCenters.Add( new MeetingCenterModel( values ) );
+            if ( window.DialogResult.HasValue && (bool)window.DialogResult )
+            {
+                var values = window.GetMeetingCenterValues( );
+                _viewModel.MeetingCenters.Add( new MeetingCenterModel( values ) );
+            }
         }
 
         private void MeetingCentersEditBtn_Click( object sender, RoutedEventArgs e )
         {
-            if ( _viewModel.SelectedMeetingCentre != null )
+            if ( _viewModel.SelectedMeetingCenter != null )
             {
-                var values = GetValuesForMeetingCenter( );
-                _viewModel.SelectedMeetingCentre.SetData( values );
+                ManageMeetingCenterWindow window = new ManageMeetingCenterWindow( _viewModel.SelectedMeetingCenter );
+                window.ShowDialog( );
+
+                if ( window.DialogResult.HasValue && (bool)window.DialogResult )
+                {
+                    var values = window.GetMeetingCenterValues( );
+                    _viewModel.SelectedMeetingCenter.SetData( values );
+                }
             }
         }
 
         private void MeetingCentersDeleteBtn_Click( object sender, RoutedEventArgs e )
         {
-            if ( _viewModel.SelectedMeetingCentre != null )
+            if ( _viewModel.SelectedMeetingCenter != null )
             {
-                var result = GetConfirmationResult( $"Are you sure you want to delete '{_viewModel.SelectedMeetingCentre.Name}' (code: {_viewModel.SelectedMeetingCentre.Code}) ?", "Delete Meeting Center" );
+                var result = GetConfirmationResult( $"Are you sure you want to delete '{_viewModel.SelectedMeetingCenter.Name}' (code: {_viewModel.SelectedMeetingCenter.Code}) ?", "Delete Meeting Center" );
                 if ( result )
                 {
-                    _viewModel.MeetingCenters.Remove( _viewModel.SelectedMeetingCentre );
+                    _viewModel.MeetingCenters.Remove( _viewModel.SelectedMeetingCenter );
                     MeetingRoomsDataGrid.ItemsSource = null;
-                }                
+                }
             }
         }
 
@@ -85,17 +90,31 @@ namespace HomeWorkOne.WPF
 
         private void MeetingRoomsAddBtn_Click( object sender, RoutedEventArgs e )
         {
-            var values = GetValuesForMeetingRoom( );
+            if ( _viewModel.SelectedMeetingCenter != null )
+            {
+                ManageMeetingRoomWindow window = new ManageMeetingRoomWindow( );
+                window.ShowDialog( );
 
-            _viewModel.GetMeetingRooms(_viewModel.SelectedMeetingCentre).Add( new MeetingRoomModel( values ) );
+                if ( window.DialogResult.HasValue && (bool)window.DialogResult )
+                {
+                    var values = window.GetMeetingRoomValues( );
+                    _viewModel.GetMeetingRooms( _viewModel.SelectedMeetingCenter ).Add( new MeetingRoomModel( values ) );
+                }
+            }
         }
 
         private void MeetingRoomsEditBtn_Click( object sender, RoutedEventArgs e )
         {
-            if(_viewModel.SelectedMeetingRoom != null)
+            if ( _viewModel.SelectedMeetingRoom != null )
             {
-                var values = GetValuesForMeetingRoom( );
-                _viewModel.SelectedMeetingRoom.SetData( values );
+                ManageMeetingRoomWindow window = new ManageMeetingRoomWindow( _viewModel.SelectedMeetingRoom );
+                window.ShowDialog( );
+
+                if ( window.DialogResult.HasValue && (bool)window.DialogResult )
+                {
+                    var values = window.GetMeetingRoomValues( );
+                    _viewModel.SelectedMeetingRoom.SetData( values );
+                }
             }
         }
 
@@ -106,8 +125,8 @@ namespace HomeWorkOne.WPF
                 var result = GetConfirmationResult( $"Are you sure you want to delete '{_viewModel.SelectedMeetingRoom.Name}' ?", "Delete Meeting Room" );
                 if ( result )
                 {
-                    _viewModel.GetMeetingRooms( _viewModel.SelectedMeetingCentre ).Remove( _viewModel.SelectedMeetingRoom );
-                }                
+                    _viewModel.GetMeetingRooms( _viewModel.SelectedMeetingCenter ).Remove( _viewModel.SelectedMeetingRoom );
+                }
             }
         }
 
@@ -119,27 +138,23 @@ namespace HomeWorkOne.WPF
             return result == MessageBoxResult.Yes;
         }
 
-        private IMeetingCenter GetValuesForMeetingCenter( )
+        private void MenuItemExportBtn_Click( object sender, RoutedEventArgs e )
         {
-            var data = new MeetingCenterData( );
+            SaveFileDialog saveDialog = new SaveFileDialog( );
+            if(saveDialog.ShowDialog() == true )
+            {
+                saveDialog.AddExtension = true;
 
-            data.Name = MeetingCenterNameInput.Text;
-            data.Code = MeetingCenterCodeInput.Text;
-            data.Description = MeetingCenterDescriptionInput.Text;            
-
-            return data;
+            }
         }
 
-        private IMeetingRoom GetValuesForMeetingRoom( )
+        private void MenuItemImportBtn_Click( object sender, RoutedEventArgs e )
         {
-            var data = new MeetingRoomData( );
+            OpenFileDialog fileDialog = new OpenFileDialog( );
+            if ( fileDialog.ShowDialog( ) == true )
+            {
 
-            data.Name = MeetingRoomNameInput.Text;
-            data.Code = MeetingRoomCodeInput.Text;
-            data.Description = MeetingRoomDescriptionInput.Text;
-            data.AllowsVideoConference = MeetingRoomAllowsVideoInput.IsChecked.Value;
-
-            return data;
+            }
         }
     }
 }
