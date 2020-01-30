@@ -1,9 +1,13 @@
 ﻿using HomeWorkOne.Core.Entities.Definitions;
 using HomeWorkOne.Core.Entities.Extensions;
+using HomeWorkOne.Core.Services;
 using HomeWorkOne.Core.ViewModels;
 using HomeWorkOne.WPF.Windows;
 using Microsoft.Win32;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace HomeWorkOne.WPF
 {
@@ -13,6 +17,7 @@ namespace HomeWorkOne.WPF
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel _viewModel = new MainWindowViewModel( );
+        private readonly ExportImportManager _exportImportManager = new ExportImportManager( );
 
         public MainWindow( )
         {
@@ -141,10 +146,15 @@ namespace HomeWorkOne.WPF
         private void MenuItemExportBtn_Click( object sender, RoutedEventArgs e )
         {
             SaveFileDialog saveDialog = new SaveFileDialog( );
+            saveDialog.DefaultExt = "csv";
             if(saveDialog.ShowDialog() == true )
             {
                 saveDialog.AddExtension = true;
+                var fileName = saveDialog.FileName;
 
+                var data = _viewModel.GetData( );
+
+                _exportImportManager.Export( fileName, data );
             }
         }
 
@@ -153,7 +163,10 @@ namespace HomeWorkOne.WPF
             OpenFileDialog fileDialog = new OpenFileDialog( );
             if ( fileDialog.ShowDialog( ) == true )
             {
+                var fileName = fileDialog.FileName;
+                var data = _exportImportManager.Import( fileName );
 
+                _viewModel.SetData( data );                
             }
         }
     }

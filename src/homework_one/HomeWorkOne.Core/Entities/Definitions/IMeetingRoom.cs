@@ -11,5 +11,6 @@ namespace HomeWorkOne.Core.Entities.Definitions
         string Description { get; set; }
         int Capacity { get; set; }
         bool AllowsVideoConference { get; set; }
+        string MeetingCentreCode { get; set; }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using HomeWorkOne.Core.Entities.Definitions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace HomeWorkOne.Core.ViewModels
 {
@@ -50,5 +52,45 @@ namespace HomeWorkOne.Core.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged( string propertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+
+        public Dictionary<IMeetingCenter, ICollection<IMeetingRoom>> GetData( )
+        {
+            var dict = new Dictionary<IMeetingCenter, ICollection<IMeetingRoom>>( );
+            foreach ( var center in MeetingCenters )
+            {
+                var roomList = new List<IMeetingRoom>( );
+                roomList.AddRange( GetMeetingRooms(center) );
+
+                dict[ center ] = roomList;
+            }
+
+            return dict;
+        }
+
+        public void SetData( Dictionary<IMeetingCenter, ICollection<IMeetingRoom>> dict )
+        {
+            MeetingCenters = new ObservableCollection<MeetingCenterModel>( );
+            _meetingRooms = new Dictionary<MeetingCenterModel, ObservableCollection<MeetingRoomModel>>( );
+
+            foreach ( var center in dict.Keys )
+            {
+                var centerModel = new MeetingCenterModel( center );                
+                MeetingCenters.Add( centerModel );
+
+                var roomCollection = new ObservableCollection<MeetingRoomModel>( );
+
+                var rooms = dict[ center ];
+                foreach ( var room in rooms )
+                {
+                    var roomModel = new MeetingRoomModel( room );
+                    roomCollection.Add( roomModel );
+                }
+
+                _meetingRooms[ centerModel ] = roomCollection;
+            }
+
+            OnPropertyChanged( nameof( MeetingCenters ) );
+            OnPropertyChanged( nameof( _meetingRooms ) );
+        }
     }
 }

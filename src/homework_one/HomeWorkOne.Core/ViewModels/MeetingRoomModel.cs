@@ -72,6 +72,8 @@ namespace HomeWorkOne.Core.ViewModels
             }
         }
 
+        public string MeetingCentreCode { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged( string propertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
     }
