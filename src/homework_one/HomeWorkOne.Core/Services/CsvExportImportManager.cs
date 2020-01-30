@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HomeWorkOne.Core.Services
 {
-    public class ExportImportManager
+    public class CsvExportImportManager: IExportImportManager
     {
         private const string CENTERS_HEADER = "MEETING_CENTRES";
         private const string ROOMS_HEADER = "MEETING_ROOMS";

@@ -17,7 +17,7 @@ namespace HomeWorkOne.WPF
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel _viewModel = new MainWindowViewModel( );
-        private readonly ExportImportManager _exportImportManager = new ExportImportManager( );
+        private readonly IExportImportManager _exportImportManager = new CsvExportImportManager( );
 
         public MainWindow( )
         {
