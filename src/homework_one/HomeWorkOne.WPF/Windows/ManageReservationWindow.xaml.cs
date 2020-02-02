@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HomeWorkOne.Core.Entities.Definitions;
+using HomeWorkOne.Core.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HomeWorkOne.WPF.Windows
 {
@@ -17,9 +9,27 @@ namespace HomeWorkOne.WPF.Windows
     /// </summary>
     public partial class ManageReservationWindow : Window
     {
-        public ManageReservationWindow( )
+        private readonly ReservationViewModel _viewModel;
+
+        public ManageReservationWindow( IMeetingRoom meetingRoom )
         {
             InitializeComponent( );
+            _viewModel = new ReservationViewModel( meetingRoom );
+            DataContext = _viewModel;
+        }
+
+        public IReservation GetReservationValues => _viewModel;
+
+        private void SaveBtn_Click( object sender, RoutedEventArgs e )
+        {
+            DialogResult = true;
+            Close( );
+        }
+
+        private void CancelBtn_Click( object sender, RoutedEventArgs e )
+        {
+            DialogResult = false;
+            Close( );
         }
     }
 }

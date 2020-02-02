@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeWorkOne.WPF.Windows"
         mc:Ignorable="d"
-        Title="ManageReservationWindow" Height="450" Width="800">
+        Title="ManageReservationWindow" Height="395" Width="800">
     <Grid>
-        
+        <GroupBox Header="Reservation Details" HorizontalAlignment="Stretch" >
+            <Grid>
+                <Label Content="From" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                <DatePicker x:Name="ReservationFromDateInput" Text="{Binding From, Mode=TwoWay}" Margin="10,36,16,0" Height="24" VerticalAlignment="Top"/>
+
+                <Label Content="To" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
+                <DatePicker x:Name="ReservationUntilDateInput" Text="{Binding Until, Mode=TwoWay}" Margin="10,88,16,0" Height="24" VerticalAlignment="Top"/>
+
+                <Label Content="Expected Persons Count" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
+                <TextBox x:Name="ReservationPersonCountInput" Text="{Binding ExpectedPersonCount, Mode=TwoWay}" Margin="10,142,16,0" Height="24" VerticalAlignment="Top"/>
+                <CheckBox x:Name="ReservationIsVideoInput" Content="Video Conference" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" IsChecked="{Binding IsVideoConference, Mode=TwoWay}"/>
+                <Label Content="Customer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="9,175,0,0"/>
+                <TextBox x:Name="ReservationCustomerInput" Text="{Binding Customer, Mode=TwoWay}" Margin="9,201,17,0" Height="24" VerticalAlignment="Top"/>
+                <Label Content="Note" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="9,251,0,0"/>
+                <TextBlock x:Name="ReservationNoteInput" Text="{Binding Note, Mode=TwoWay}" Margin="10,277,16,0" Height="24" VerticalAlignment="Top"/>
+                <Button x:Name="SaveBtn" Content="Save" HorizontalAlignment="Right" Margin="0,0,72,10" Height="20" VerticalAlignment="Bottom" Click="SaveBtn_Click"/>
+                <Button x:Name="CancelBtn" Content="Cancel" Margin="0,0,17,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="39" Click="CancelBtn_Click"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

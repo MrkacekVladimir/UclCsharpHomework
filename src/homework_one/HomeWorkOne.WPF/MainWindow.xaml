@@ -7,7 +7,7 @@
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="623" Width="800">
+        Title="MainWindow" Height="755" Width="800">
     <Window.DataContext>
         <local:MainWindowViewModel />
     </Window.DataContext>
@@ -55,13 +55,13 @@
                         <GroupBox Header="Meeting Center Details" HorizontalAlignment="Stretch">
                             <Grid>
                                 <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-                                <TextBox x:Name="MeetingCenterNameInput" Text="{Binding SelectedMeetingCenter.Name}" Height="24" Margin="10,36,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                                <TextBox x:Name="MeetingCenterNameInput" Text="{Binding CenterOverview.SelectedMeetingCenter.Name}" Height="24" Margin="10,36,16,0" VerticalAlignment="Top" IsReadOnly="True" />
 
                                 <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-                                <TextBox x:Name="MeetingCenterCodeInput" Text="{Binding SelectedMeetingCenter.Code}" Height="24" Margin="10,88,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                                <TextBox x:Name="MeetingCenterCodeInput" Text="{Binding CenterOverview.SelectedMeetingCenter.Code}" Height="24" Margin="10,88,16,0" VerticalAlignment="Top" IsReadOnly="True" />
 
                                 <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
-                                <TextBox x:Name="MeetingCenterDescriptionInput" Text="{Binding SelectedMeetingCenter.Description}" Height="24" Margin="10,142,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                                <TextBox x:Name="MeetingCenterDescriptionInput" Text="{Binding CenterOverview.SelectedMeetingCenter.Description}" Height="24" Margin="10,142,16,0" VerticalAlignment="Top" IsReadOnly="True" />
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -86,17 +86,17 @@
                         <GroupBox Header="Meeting Room Details" HorizontalAlignment="Stretch" >
                             <Grid>
                                 <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-                                <TextBox x:Name="MeetingRoomNameInput" Text="{Binding SelectedMeetingRoom.Name}" Margin="10,36,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+                                <TextBox x:Name="MeetingRoomNameInput" Text="{Binding CenterOverview.SelectedMeetingRoom.Name}" Margin="10,36,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
 
                                 <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-                                <TextBox x:Name="MeetingRoomCodeInput" Text="{Binding SelectedMeetingRoom.Code}" Margin="10,88,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+                                <TextBox x:Name="MeetingRoomCodeInput" Text="{Binding CenterOverview.SelectedMeetingRoom.Code}" Margin="10,88,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
 
                                 <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
-                                <TextBox x:Name="MeetingRoomDescriptionInput" Text="{Binding SelectedMeetingRoom.Description}" Margin="10,142,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+                                <TextBox x:Name="MeetingRoomDescriptionInput" Text="{Binding CenterOverview.SelectedMeetingRoom.Description}" Margin="10,142,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
 
                                 <CheckBox x:Name="MeetingRoomAllowsVideoInput" Content="Allows Video Conference" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" IsChecked="{Binding SelectedMeetingRoom.AllowsVideoConference}" IsEnabled="False"/>
                                 <Label Content="Capacity" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,171,0,0"/>
-                                <TextBox x:Name="MeetingRoomCapacityInput" Text="{Binding SelectedMeetingRoom.Capacity}" Margin="10,197,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
+                                <TextBox x:Name="MeetingRoomCapacityInput" Text="{Binding CenterOverview.SelectedMeetingRoom.Capacity}" Margin="10,197,16,0" Height="24" VerticalAlignment="Top" IsReadOnly="True"/>
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -112,28 +112,42 @@
 
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="6*" />
-                            <RowDefinition Height="4*" />
+                            <RowDefinition Height="5*" />
+                            <RowDefinition Height="5*" />
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0">
-                            <Label Content="Meeting Planning" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
-                                <DataGrid Margin="15,34,0,5"  SelectionChanged="MeetingCentersDataGrid_SelectionChanged" SelectionMode="Single" IsReadOnly="True" HorizontalAlignment="Stretch"/>
-                                <Button  Content="New" Margin="20,0,0,0" VerticalAlignment="Center" Click="MeetingCentersAddBtn_Click" HorizontalAlignment="Left" Width="28"/>
-                                <Button  Content="Edit" Margin="53,0,0,0" VerticalAlignment="Center" Click="MeetingCentersEditBtn_Click" HorizontalAlignment="Left" Width="24"/>
-                                <Button  Content="Delete" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="38" Click="MeetingCentersDeleteBtn_Click"/>
+                            <Label Content="Meeting Center" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top"/>
+                            <ComboBox Margin="20,34,10,0" VerticalAlignment="Top"/>
+                            <Label Content="Meeting Room" HorizontalAlignment="Left" Margin="20,61,0,0" VerticalAlignment="Top"/>
+                            <ComboBox Margin="20,98,10,0" VerticalAlignment="Top"/>
+                            <Label Content="Meeting Planning" HorizontalAlignment="Left" Margin="20,125,0,0" VerticalAlignment="Top"/>
+                            <DatePicker Margin="20,156,10,0" VerticalAlignment="Top"/>
+                            <Label Content="Meetings" HorizontalAlignment="Left" Margin="20,180,0,0" VerticalAlignment="Top"/>
+                            <ListView Height="100" Margin="20,211,10,35" />
+                            <Button  Content="New" Margin="20,316,0,0" VerticalAlignment="Top" Click="ReservationsAddBtn_Click" HorizontalAlignment="Left" Width="28"/>
+                            <Button  Content="Edit" Margin="53,316,0,0" VerticalAlignment="Top" Click="ReservationsEditBtn_Click" HorizontalAlignment="Left" Width="24"/>
+                            <Button  Content="Delete" Margin="0,316,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="38" Click="ReservationsDeleteBtn_Click"/>
+
                         </Grid>
                         <Grid Grid.Row="1">
-                            <GroupBox Header="Meeting Center Details" HorizontalAlignment="Stretch">
+                            <GroupBox Header="Meeting Details" HorizontalAlignment="Stretch">
                                 <Grid>
-                                    <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-                                    <TextBox Text="{Binding SelectedMeetingCenter.Name}" Height="24" Margin="10,36,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                                    <Label Content="From" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                                    <DatePicker SelectedDate="{Binding Planning.SelectedReservation.From}" Height="24" Margin="10,36,272,0" VerticalAlignment="Top" IsEnabled="False" />
 
-                                    <Label Content="Code" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,61,0,0"/>
-                                    <TextBox Text="{Binding SelectedMeetingCenter.Code}" Height="24" Margin="10,88,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                                    <Label Content="To" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="277,10,0,0"/>
+                                    <DatePicker SelectedDate="{Binding Planning.SelectedReservation.Until}" Height="24" Margin="277,36,16,0" VerticalAlignment="Top" IsEnabled="False" />
 
-                                    <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,116,0,0"/>
-                                    <TextBox Text="{Binding SelectedMeetingCenter.Description}" Height="24" Margin="10,142,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+                                    <Label Content="Expected persons count" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,66,0,0"/>
+                                    <TextBox Text="{Binding Planning.SelectedReservation.ExpectedPersonCount}" Height="24" Margin="10,92,16,0" VerticalAlignment="Top" IsReadOnly="True" />
+
+                                    <Label Content="Customer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,126,0,0"/>
+                                    <TextBox Text="{Binding Planning.SelectedReservation.Customer}" Height="24" Margin="11,156,15,0" VerticalAlignment="Top" IsReadOnly="True" />
+
+                                    <CheckBox Content="Video Conference" IsChecked="{Binding Planning.SelectedReservation.IsVideoConference}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,186,0,0"/>
+                                    <Label Content="Note" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,206,0,0"/>
+                                    <TextBox Text="{Binding Planning.SelectedReservation.Note}" Height="76" Margin="14,237,12,0" VerticalAlignment="Top" IsReadOnly="True" />
                                 </Grid>
                             </GroupBox>
                         </Grid>
@@ -141,6 +155,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        
+
     </Grid>
 </Window>
